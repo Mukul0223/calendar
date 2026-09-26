@@ -19,7 +19,7 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const { user, token } = await authService.login(email, password);
+  const { user, token } = await authService.login(email, password, req, res);
 
   res
     .status(200)
@@ -43,7 +43,7 @@ const refresh = asyncHandler(async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
   const token = req.cookies?.refresh_token;
-  authService.logout(token);
+  await authService.logout(token);
 
   res.clearCookie("refresh_token", { path: "/api/auth/refresh" });
 
