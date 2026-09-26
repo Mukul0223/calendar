@@ -70,6 +70,13 @@ const rotateRefreshToken = async (oldDoc, userId, req, res) => {
   return { accessToken: newAccess };
 };
 
+const revokeAllUserTokens = async (userId) => {
+  await RefreshToken.updateMany(
+    { userId, revokedAt: null },
+    { $set: { revokedAt: new Date() } },
+  );
+};
+
 module.exports = {
   hashToken,
   createJti,
@@ -78,4 +85,5 @@ module.exports = {
   persistRefreshToken,
   setRefreshCookie,
   rotateRefreshToken,
+  revokeAllUserTokens,
 };

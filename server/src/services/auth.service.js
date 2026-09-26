@@ -12,6 +12,7 @@ const {
   setRefreshCookie,
   hashToken,
   rotateRefreshToken,
+  revokeAllUserTokens,
 } = require("../utils/tokens.js");
 
 const register = async (name, email, password) => {
@@ -73,13 +74,18 @@ const refresh = async (token, req, res) => {
   const doc = await RefreshToken.findOne({
     token: tokenHash,
     jti: decoded.jti,
-  }).populate("userId");
+  });
 
   if (!doc) {
     throw new ApiError(401, "Refresh token not recognized");
   }
   if (doc.revokedAt) {
-    throw new ApiError(401, "Refresh token revoked");
+    await revokeAllUserTokens(doc.userId);
+    res.clearCookie("refresh_token", { path: "/api/auth/refresh" });
+    throw new ApiError(
+      401,
+      "Refresh token reuse detected - all sessions revoked",
+    );
   }
   if (doc.expiresAt < new Date()) {
     throw new ApiError(401, "Refresh token expired");

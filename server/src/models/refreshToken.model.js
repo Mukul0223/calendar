@@ -13,7 +13,7 @@ const refreshTokenSchema = new mongoose.Schema({
     index: true,
   },
   jti: { type: String, required: true, index: true },
-  expiresAt: { type: Date, required: true, index: true },
+  expiresAt: { type: Date, required: true, index: { expireAfterSeconds: 0 } },
   revokedAt: { type: Date, default: null },
   replacedBy: { type: String, default: null },
   createdAt: {
