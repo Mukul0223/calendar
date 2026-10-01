@@ -24,8 +24,13 @@ axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const isRefreshCall = originalRequest?.url?.includes("/auth/refresh");
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isRefreshCall
+    ) {
       originalRequest._retry = true;
 
       try {
@@ -33,7 +38,7 @@ axiosClient.interceptors.response.use(
           refreshPromise = axiosClient
             .post("/auth/refresh")
             .then((res) => {
-              const newToken = res.data.data.token;
+              const newToken = res.data.data.accessToken;
               setAccessToken(newToken);
               return newToken;
             })

@@ -5,6 +5,7 @@ import {
   loginRequest,
   registerRequest,
   logoutRequest,
+  meRequest,
 } from "../api/auth.api.js";
 import axiosClient, {
   setAccessToken as setAxiosAccessToken,
@@ -13,7 +14,7 @@ import axiosClient, {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [accessToken, setAccessTokenState] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -26,10 +27,12 @@ export function AuthProvider({ children }) {
     const initializeAuth = async () => {
       try {
         const res = await axiosClient.post("/auth/refresh");
-        const { token, user } = res.data.data;
+        const { accessToken } = res.data.data;
 
-        updateTokens(token);
-        if (user) setUser(user);
+        updateTokens(accessToken);
+
+        const meRes = await meRequest(accessToken);
+        setUser(meRes.data.data.user);
       } catch {
         updateTokens(null);
         setUser(null);
@@ -76,7 +79,7 @@ export function AuthProvider({ children }) {
       setUser(null);
       updateTokens(null);
       setIsLoading(false);
-      navigate("/");
+      navigate("/login");
     }
   };
 
