@@ -12,18 +12,20 @@ import { Input } from "./ui/input.jsx";
 import { Label } from "./ui/label";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export function LoginForm() {
+  const location = useLocation();
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const successMessage = location.state?.successMessage;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
-
-  const { login } = useAuth();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +50,12 @@ export function LoginForm() {
 
   return (
     <Card className="w-full max-w-md shadow-lg border-muted">
+      {/* Render success message alert box */}
+      {successMessage && (
+        <div className="rounded-md bg-emerald-500/15 p-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
+          {successMessage}
+        </div>
+      )}
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold tracking-tight">
           Sign in

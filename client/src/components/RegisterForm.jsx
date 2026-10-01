@@ -33,7 +33,12 @@ export default function RegisterForm() {
 
     try {
       await register(name, email, password);
-      navigate("/login");
+      navigate("/login", {
+        state: {
+          successMessage:
+            "Account created successfully! Please sign in with your credentials.",
+        },
+      });
     } catch (err) {
       console.log("Register Failed", err);
       const data = err.response?.data || err;
