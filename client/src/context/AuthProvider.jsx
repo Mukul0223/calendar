@@ -69,10 +69,10 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = async () => {
+  const logout = async (accessToken) => {
     setIsLoading(true);
     try {
-      await logoutRequest();
+      await logoutRequest(accessToken);
     } catch (error) {
       console.error("Failed to revoke refresh token on backend:", error);
     } finally {
@@ -83,7 +83,15 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const value = { user, accessToken, isLoading, login, register, logout };
+  const value = {
+    user,
+    accessToken,
+    isLoading,
+    isAuthenticated: Boolean(user),
+    login,
+    register,
+    logout,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

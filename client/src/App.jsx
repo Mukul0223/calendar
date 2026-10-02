@@ -5,11 +5,13 @@ import Register from "./pages/Register.jsx";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NotFoundPage from "./pages/NotFoundPage";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <main className="flex-1">
+      <Navbar />
+      <main className="flex-1 px-4">
         <Routes>
           {/* Public Routees */}
           <Route path="/" element={<LandingPage />} />
