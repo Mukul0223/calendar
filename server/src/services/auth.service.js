@@ -81,7 +81,7 @@ const refresh = async (token, req, res) => {
   }
   if (doc.revokedAt) {
     await revokeAllUserTokens(doc.userId);
-    res.clearCookie("refresh_token", { path: "/api/auth/refresh" });
+    res.clearCookie("refresh_token", { path: "/api/auth" });
     throw new ApiError(
       401,
       "Refresh token reuse detected - all sessions revoked",

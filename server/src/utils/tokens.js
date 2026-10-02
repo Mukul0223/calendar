@@ -42,7 +42,7 @@ const setRefreshCookie = (res, refreshToken) => {
     httpOnly: true,
     secure: isProd,
     sameSite: "strict",
-    path: "/api/auth/refresh",
+    path: "/api/auth",
     maxAge: env.REFRESH_TOKEN_EXPIRES_IN * 1000,
   });
 };

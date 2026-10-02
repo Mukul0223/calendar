@@ -69,10 +69,10 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = async (accessToken) => {
+  const logout = async () => {
     setIsLoading(true);
     try {
-      await logoutRequest(accessToken);
+      await logoutRequest();
     } catch (error) {
       console.error("Failed to revoke refresh token on backend:", error);
     } finally {

@@ -8,8 +8,7 @@ export const loginRequest = (email, password) =>
 
 export const refreshRequest = () => axiosClient.post("/auth/refresh");
 
-export const logoutRequest = (token) =>
-  axiosClient.post("/auth/logout", { token });
+export const logoutRequest = () => axiosClient.post("/auth/logout");
 
 export const meRequest = (accessToken) =>
   axiosClient.get("/auth/me", {

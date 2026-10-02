@@ -45,7 +45,7 @@ const logout = asyncHandler(async (req, res) => {
   const token = req.cookies?.refresh_token;
   await authService.logout(token);
 
-  res.clearCookie("refresh_token", { path: "/api/auth/refresh" });
+  res.clearCookie("refresh_token", { path: "/api/auth" });
 
   return res.status(200).json(new ApiResponse(200, {}, "Logged out"));
 });
